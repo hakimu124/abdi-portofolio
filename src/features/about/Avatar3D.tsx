@@ -67,7 +67,7 @@ export function Avatar3D() {
           fill
           className="object-cover scale-110 transition-transform duration-700 hover:scale-125"
         />
-      </div}
+      </div>
 
       {/* The 3D Robot Shell that tracks eye movement */}
       <canvas className="absolute inset-0 w-full h-full z-20 pointer-events-none" />
