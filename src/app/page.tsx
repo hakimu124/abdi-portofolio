@@ -4,10 +4,12 @@ import { Experience } from "@/features/experience/Experience";
 import { Skills } from "@/features/skills/Skills";
 import { Gallery } from "@/features/gallery/Gallery";
 import { Contact } from "@/features/contact/Contact";
+import { CursorGlow } from "@/components/motion/CursorGlow";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-obsidian">
+    <main className="min-h-screen bg-obsidian selection:bg-gold/30 selection:text-gold">
+      <CursorGlow />
       <Hero />
       <About />
       <Experience />
