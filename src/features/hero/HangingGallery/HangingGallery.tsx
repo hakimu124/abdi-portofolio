@@ -1,5 +1,4 @@
 "use client";
-import { HangingGallery } from './HangingGallery'; // Wait, I need to define it
 import { GALLERY_PHOTOS } from './gallery.config';
 import { PhotoCard } from './PhotoCard';
 import { useCursorPosition } from '@/hooks/useCursorPosition';
