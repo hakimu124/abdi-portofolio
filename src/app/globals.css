@@ -1,26 +1,38 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-obsidian:   #0A0A0A;   /* Background */
+  --color-surface:    #111111;   /* Card base */
+  --color-border:     rgba(255,255,255,0.08);
+  --color-gold:       #D4AF37;   /* Primary accent */
+  --color-gold-muted: #A8892A;   /* Hover states */
+  --color-mist:       #E9ECEC;   /* Body text */
+  --color-mist-dim:   #9CA3AF;   /* Secondary text */
+
+  /* Safaricom accent (use in experience card only) */
+  --color-safaricom:  #4CAF50;
+
+  --background: var(--color-obsidian);
+  --foreground: var(--color-mist);
 }
 
 @theme inline {
+  --color-obsidian: var(--color-obsidian);
+  --color-surface: var(--color-surface);
+  --color-border: var(--color-border);
+  --color-gold: var(--color-gold);
+  --color-gold-muted: var(--color-gold-muted);
+  --color-mist: var(--color-mist);
+  --color-mist-dim: var(--color-mist-dim);
+  --color-safaricom: var(--color-safaricom);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-obsidian);
+  color: var(--color-mist);
+  font-family: 'Inter', sans-serif; /* Fallback until fonts are wired */
 }
+
