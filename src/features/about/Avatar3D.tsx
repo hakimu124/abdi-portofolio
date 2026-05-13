@@ -2,6 +2,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useCursorPosition } from '@/hooks/useCursorPosition';
+import Image from 'next/image';
 
 export function Avatar3D() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -10,7 +11,6 @@ export function Avatar3D() {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Basic Three.js Setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({
@@ -19,30 +19,24 @@ export function Avatar3D() {
       antialias: true
     });
 
-    renderer.setSize(300, 300);
+    renderer.setSize(400, 400);
     renderer.setPixelRatio(window.devicePixelRatio);
 
-    // Create a high-end "Robot/Avatar" using a group of shapes
-    const avatarGroup = new THREE.Group();
+    // a "Robot" shell that surrounds the real image
+    const robotShell = new THREE.Group();
 
-    // Head
-    const headGeo = new THREE.IcosahedronGeometry(1, 2);
-    const headMat = new THREE.MeshStandardMaterial({
-      color: 0xD4AF37,
-      wireframe: true,
-      emissive: 0xD4AF37,
-      emissiveIntensity: 0.5
-    });
-    const head = new THREE.Mesh(headGeo, headMat);
-    avatarGroup.add(head);
+    const ringGeo = new THREE.TorusGeometry(1.2, 0.05, 16, 100);
+    const ringMat = new THREE.MeshStandardMaterial({ color: 0xD4AF37, emissive: 0xD4AF37, emissiveIntensity: 0.5 });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    robotShell.add(ring);
 
-    // Core
-    const coreGeo = new THREE.SphereGeometry(0.4, 32, 32);
-    const coreMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff });
-    const core = new THREE.Mesh(coreGeo, coreMat);
-    avatarGroup.add(core);
+    const orbitGeo = new THREE.TorusGeometry(1.5, 0.02, 16, 100);
+    const orbitMat = new THREE.MeshBasicMaterial({ color: 0xD4AF37, transparent: true, opacity: 0.3 });
+    const orbit = new THREE.Mesh(orbitGeo, orbitMat);
+    orbit.rotation.x = Math.PI / 2;
+    robotShell.add(orbit);
 
-    scene.add(avatarGroup);
+    scene.add(robotShell);
 
     const light = new THREE.PointLight(0xffffff, 1);
     light.position.set(5, 5, 5);
@@ -53,25 +47,30 @@ export function Avatar3D() {
 
     const animate = () => {
       requestAnimationFrame(animate);
-
-      // Eye-tracking logic: rotate avatar towards cursor
-      // x is -1 to 1, y is -1 to 1
-      avatarGroup.rotation.y = x * 0.5;
-      avatarGroup.rotation.x = -y * 0.5;
-
+      robotShell.rotation.y = x * 0.3;
+      robotShell.rotation.x = -y * 0.3;
+      orbit.rotation.z += 0.01;
       renderer.render(scene, camera);
     };
 
     animate();
-
-    return () => {
-      renderer.dispose();
-    };
+    return () => renderer.dispose();
   }, [x, y]);
 
   return (
-    <div ref={containerRef} className="w-full h-full flex items-center justify-center">
-      <canvas className="w-full h-full" />
+    <div ref={containerRef} className="relative w-full h-full flex items-center justify-center">
+      {/* The Real Image: Centerpiece */}
+      <div className="absolute z-10 w-3/4 h-3/4 rounded-full overflow-hidden border-2 border-gold/30 shadow-2xl">
+        <Image
+          src="/images/profile.avif" // User needs to provide this image
+          alt="Abdihakim Mohamed"
+          fill
+          className="object-cover scale-110 transition-transform duration-700 hover:scale-125"
+        />
+      </div}
+
+      {/* The 3D Robot Shell that tracks eye movement */}
+      <canvas className="absolute inset-0 w-full h-full z-20 pointer-events-none" />
     </div>
   );
 }

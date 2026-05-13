@@ -13,40 +13,50 @@ export function PhotoCard({ photo, parallax }: PhotoCardProps) {
     <motion.div
       className="absolute"
       style={{ left: photo.x, top: photo.y, zIndex: photo.z }}
-      initial={{ opacity: 0, scale: 0.8 }}
+      initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
       animate={{
         opacity: 1,
         scale: 1,
-        x: parallax.x * (photo.z * 30),
+        rotate: 5,
+        x: parallax.x * (photo.z * 40),
         y: [
-            parallax.y * (photo.z * 30),
-            parallax.y * (photo.z * 30) - 20,
-            parallax.y * (photo.z * 30)
+          parallax.y * (photo.z * 40),
+          parallax.y * (photo.z * 40) - 30,
+          parallax.y * (photo.z * 40)
         ],
       }}
       transition={{
-        opacity: { duration: 0.8 },
-        scale: { duration: 0.8 },
-        x: { type: 'spring', stiffness: 100, damping: 20 },
+        opacity: { duration: 1 },
+        scale: { duration: 1 },
+        x: { type: 'spring', stiffness: 80, damping: 20 },
         y: {
-            x: { type: 'spring', stiffness: 100, damping: 20 },
-            repeat: Infinity,
-            repeatType: "reverse",
-            duration: photo.drift.duration,
-            delay: photo.drift.delay
+          repeat: Infinity,
+          repeatType: "reverse",
+          duration: photo.drift.duration,
+          delay: photo.drift.delay,
+          ease: "easeInOut"
         },
       }}
     >
       <div className="relative group">
-        <div className="absolute -inset-1 bg-gold/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        <div className="relative overflow-hidden rounded-xl border border-white/10 bg-surface shadow-2xl">
+        {/* Glow effect behind card */}
+        <div className="absolute -inset-2 bg-gold/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-surface shadow-2xl transform group-hover:scale-105 transition-transform duration-500">
           <Image
             src={photo.src}
-            alt={`Gallery photo ${photo.id}`}
+            alt={`Abdihakim Portfolio - ${photo.label}`}
             width={200}
-            height={250}
-            className="object-cover w-full h-auto transition-transform duration-700 group-hover:scale-110"
+            height={300}
+            className="object-cover w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700"
           />
+
+          {/* Elegant label that slides up on hover */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-obsidian to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+            <p className="text-gold font-mono text-[10px] uppercase tracking-widest text-center">
+              {photo.label}
+            </p>
+          </div>
         </div>
       </div>
     </motion.div>
