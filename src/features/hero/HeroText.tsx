@@ -23,6 +23,6 @@ export function HeroText() {
           Senior Frontend Developer · UI/UX Designer
         </p>
       </motion.div>
-    </div}
+    </div>
   );
 }
